@@ -1,6 +1,6 @@
 {% set name = "pexsi" %}
 {% set version = "1.2.0" %}
-{% set build = 0 %}
+{% set build = 1 %}
 {% set mpi = mpi or "mpich" %}
 
 package:
@@ -13,6 +13,7 @@ source:
   patches:
     - superlu_dist-cname.patch
     - cmake-shared-lib.patch
+    - mpi-deprecated-api.patch  # [mpi == "openmpi"]
 
 build:
   number: {{ build }}
