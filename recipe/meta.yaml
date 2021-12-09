@@ -41,6 +41,7 @@ requirements:
     - ninja
     - llvm-openmp  # [osx]
     - libgomp  # [linux]
+    - {{ mpi }}  # [build_platform != target_platform and mpi == "openmpi"]
   host:
     - {{ mpi }}
     - parmetis
