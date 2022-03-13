@@ -19,18 +19,19 @@ build:
   number: {{ build }}
   skip: True  # [win]
   script:
+    - export OPAL_PREFIX=$PREFIX  # [mpi == "openmpi"]
     - export OMPI_MCA_plm=isolated OMPI_MCA_btl_vader_single_copy_mechanism=none OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == "openmpi"]
-    - export CXX="$PREFIX/bin/mpicxx" CC="$PREFIX/bin/mpicc" FC="$PREFIX/bin/mpifort"
+    - export CXX="mpicxx" CC="mpicc" FC="mpifort"
     - cmake ${CMAKE_ARGS} -DBUILD_SHARED_LIBS=ON -DPEXSI_ENABLE_OPENMP=ON -G Ninja -B _build
     - cmake --build _build
-    - ctest --test-dir _build --output-on-failure  # [build_platform != target_platform]
+    - ctest --test-dir _build --output-on-failure  # [build_platform == target_platform]
     - cmake --install _build
 
   {% set mpi_prefix = "mpi_" + mpi %}
   string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}"
 
   run_exports:
-    - {{ name|lower }} * {{ mpi_prefix }}_*
+    - {{ pin_subpackage(name, max_pin='x.x') }} {{ mpi_prefix }}_*
 
 requirements:
   build:
@@ -41,6 +42,7 @@ requirements:
     - ninja
     - llvm-openmp  # [osx]
     - libgomp  # [linux]
+    - {{ mpi }}  # [mpi == "openmpi" and build_platform != target_platform]
   host:
     - {{ mpi }}
     - parmetis
