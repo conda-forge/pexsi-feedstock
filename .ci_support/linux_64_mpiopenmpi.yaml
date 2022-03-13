@@ -28,6 +28,8 @@ mpich:
 - '4'
 openmpi:
 - '4'
+superlu_dist:
+- 7.1.1
 target_platform:
 - linux-64
 zip_keys:
