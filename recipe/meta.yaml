@@ -24,10 +24,6 @@ build:
        CXX="mpicxx"
        CC="mpicc"
        FC="mpifort"
-       OPAL_PREFIX=$PREFIX  # [mpi == "openmpi"]
-       OMPI_MCA_plm=isolated  # [mpi == "openmpi"]
-       OMPI_MCA_btl_vader_single_copy_mechanism=none  # [mpi == "openmpi"]
-       OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == "openmpi"]
     - >
        cmake
        ${CMAKE_ARGS}
