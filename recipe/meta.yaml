@@ -33,6 +33,7 @@ build:
        ${CMAKE_ARGS}
        -DBUILD_SHARED_LIBS=ON
        -DPEXSI_ENABLE_OPENMP=ON
+       -DSuperLU_DIST_INCLUDE_DIR=$PREFIX/include/superlu-dist
        -DBLAS_LIBRARIES=$PREFIX/lib/libblas${SHLIB_EXT}
        -DLAPACK_LIBRARIES=$PREFIX/lib/liblapack${SHLIB_EXT}
        -G Ninja -B _build
