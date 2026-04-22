@@ -1,6 +1,6 @@
 {% set name = "pexsi" %}
 {% set version = "2.0.0" %}
-{% set build = 0 %}
+{% set build = 1 %}
 {% set mpi = mpi or "mpich" %}
 
 package:
@@ -24,15 +24,12 @@ build:
        CXX="mpicxx"
        CC="mpicc"
        FC="mpifort"
-       OPAL_PREFIX=$PREFIX  # [mpi == "openmpi"]
-       OMPI_MCA_plm=isolated  # [mpi == "openmpi"]
-       OMPI_MCA_btl_vader_single_copy_mechanism=none  # [mpi == "openmpi"]
-       OMPI_MCA_rmaps_base_oversubscribe=yes  # [mpi == "openmpi"]
     - >
        cmake
        ${CMAKE_ARGS}
        -DBUILD_SHARED_LIBS=ON
        -DPEXSI_ENABLE_OPENMP=ON
+       -DSuperLU_DIST_INCLUDE_DIR=$PREFIX/include/superlu-dist
        -DBLAS_LIBRARIES=$PREFIX/lib/libblas${SHLIB_EXT}
        -DLAPACK_LIBRARIES=$PREFIX/lib/liblapack${SHLIB_EXT}
        -G Ninja -B _build
@@ -49,6 +46,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - cmake
